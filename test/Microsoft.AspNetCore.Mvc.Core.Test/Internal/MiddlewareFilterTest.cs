@@ -409,10 +409,10 @@ namespace Microsoft.AspNetCore.Mvc.Internal
                       logger,
                       diagnosticSource,
                       CreatControllerContext(actionContext, valueProviderFactories, maxAllowedErrorsInModelState),
-                      filters,
-                      CreateExecutor((ControllerActionDescriptor)actionContext.ActionDescriptor))
+                      filters)
             {
                 ControllerFactory = controllerFactory;
+                Executor = CreateExecutor((ControllerActionDescriptor)actionContext.ActionDescriptor);
             }
 
             public MockControllerFactory ControllerFactory { get; }

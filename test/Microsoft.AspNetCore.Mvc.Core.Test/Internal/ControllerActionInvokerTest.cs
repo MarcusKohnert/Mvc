@@ -2933,11 +2933,12 @@ namespace Microsoft.AspNetCore.Mvc.Internal
                 new NullLoggerFactory().CreateLogger<ControllerActionInvoker>(),
                 new DiagnosticListener("Microsoft.AspNetCore"),
                 controllerContext,
-                new IFilterMetadata[0],
-                ObjectMethodExecutor.Create(
-                    actionDescriptor.MethodInfo,
-                    actionDescriptor.ControllerTypeInfo,
-                    ParameterDefaultValues.GetParameterDefaultValues(actionDescriptor.MethodInfo)));
+                new IFilterMetadata[0]);
+
+            invoker.Executor = ObjectMethodExecutor.Create(
+                actionDescriptor.MethodInfo,
+                actionDescriptor.ControllerTypeInfo,
+                ParameterDefaultValues.GetParameterDefaultValues(actionDescriptor.MethodInfo));
 
             // Act
             await invoker.InvokeAsync();
@@ -3499,9 +3500,9 @@ namespace Microsoft.AspNetCore.Mvc.Internal
                       logger,
                       diagnosticSource,
                       CreatControllerContext(actionContext, valueProviderFactories, maxAllowedErrorsInModelState),
-                      filters,
-                      CreateExecutor((ControllerActionDescriptor)actionContext.ActionDescriptor))
+                      filters)
             {
+                Executor = CreateExecutor((ControllerActionDescriptor)actionContext.ActionDescriptor);
                 ControllerFactory = controllerFactory;
             }
 
